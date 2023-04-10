@@ -1,0 +1,145 @@
+﻿@model InvoiceCreateVM
+
+<form asp-action="Create" method="post" enctype="multipart/form-data">
+
+    <div id="mdlNew" class="modal fade modal-item" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title">Add new invoice</h6>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <i class="ti-close"></i>
+                    </button>
+                </div>
+                <div id="frmItem">
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <label asp-for="InvoiceNumber">Invoice Number</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="number" asp-for="InvoiceNumber" class="form-control" />
+                                            <span asp-validation-for="InvoiceNumber"></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <label asp-for="InvoiceDate">Date</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input asp-for="InvoiceDate" id="datepicker" class="form-control" autocomplete="off" data-val-date="true" type="text" />
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col-3">
+                                            <label asp-for="Customer">Customer</label>
+                                        </div>
+                                        <div class="col-9">
+                                            <input type="text" asp-for="Customer" class="form-control" />
+                                            <span asp-validation-for="Customer"></span>
+                                        </div>
+                                    </div>
+                                </div>                               
+                            </div>
+
+                            <div class="col-6">
+                                <div class="form-group">
+                                    <div class="mt-3 ">
+                                        <span class="form-label">Payment Method</span>
+                                        <label class="rdiobox d-inline mx-3">
+                                            <input asp-for="PaymentMethod" type="radio" value="1" id="PaymentMethod" />
+                                            <span class="mx-2">Cash</span>
+                                            <span asp-validation-for="PaymentMethod"></span>
+                                        </label>
+                                        <label class="rdiobox d-inline">
+                                            <input asp-for="PaymentMethod" type="radio" value="2" id="PaymentMethod"  />
+                                            <span class="mx-2">Card</span>
+                                            <span asp-validation-for="PaymentMethod"></span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col-2">
+                                    <label asp-for="Description">Description</label>
+                                </div>
+                                <div class="col-10">
+                                    <textarea type="text" asp-for="Description" class="form-control"></textarea>
+                                    <span asp-validation-for="Description"></span>
+                                </div>
+                            </div>
+                        </div>
+
+                        @*Items*@
+                        <div class="row" for="sizes">
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label>Code</label>
+                                    <input type="text" asp-for="ItemCode" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label>Name</label>
+                                    <input asp-for="ItemName" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label>Qty</label>
+                                    <input asp-for="Qty" id="Qty" type="number" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label>Price</label>
+                                    <input asp-for="Price" id="Price" type="number" class="form-control" />
+                                </div>
+                            </div>
+
+                            <div class="col-2">
+                                <div class="form-group">
+                                    <label>Total</label>
+                                    <input name="Total" id="Total" type="number" class="form-control" readonly />
+                                </div>
+                            </div>
+
+                            <div class="col-2">
+                                <div class="form-group" style="margin-top: 27%;">
+                                    <a href="Javascript:void(0);" class="btn btn-success add-size">Add</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">
+                            Close
+                        </button>
+                        <button type="submit" id="btnSaveHours" class="btn btn-primary" title="Save">Save</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</form>

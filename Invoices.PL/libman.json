@@ -1,0 +1,32 @@
+{
+  "version": "1.0",
+  "defaultProvider": "unpkg",
+  "libraries": [
+    {
+      "library": "jquery-ui-dist@1.13.2",
+      "destination": "wwwroot/lib/jquery-ui-dist/",
+      "files": [
+        "AUTHORS.txt",
+        "index.html",
+        "jquery-ui.css",
+        "jquery-ui.js",
+        "jquery-ui.min.css",
+        "jquery-ui.min.js",
+        "jquery-ui.structure.css",
+        "jquery-ui.structure.min.css",
+        "jquery-ui.theme.css",
+        "jquery-ui.theme.min.css",
+        "LICENSE.txt",
+        "package.json",
+        "README.md",
+        "external/jquery/jquery.js",
+        "images/ui-icons_444444_256x240.png",
+        "images/ui-icons_555555_256x240.png",
+        "images/ui-icons_777620_256x240.png",
+        "images/ui-icons_777777_256x240.png",
+        "images/ui-icons_cc0000_256x240.png",
+        "images/ui-icons_ffffff_256x240.png"
+      ]
+    }
+  ]
+}

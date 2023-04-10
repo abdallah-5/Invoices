@@ -1,0 +1,160 @@
+﻿@model List<InvoicesVM>
+
+@{
+    ViewData["Title"] = "Invoice page";
+}
+
+<div class="page-header d-md-flex justify-content-between">
+    <div>
+        <h3>Invoices</h3>
+        <nav aria-label="breadcrumb" class="d-flex align-items-start">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item">
+                    <a asp-action="index" asp-controller="home">Invoices Management</a>
+                </li>
+            </ol>
+        </nav>
+    </div>
+    <div class="mt-2 mt-md-0">
+        <a href="#" class="btn btn-success" data-toggle="modal" data-target="#mdlNew" title="Add new item">Add new invoice</a>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-md-12">
+
+        <div class="card">
+            <div class="card-body">
+                <div class="table-responsive">
+                    <table id="user-list" class="table table-lg">
+                        <thead>
+                            <tr>
+                                <th>Invoice Number</th>
+                                <th>Date</th>
+                                <th>Customer</th>
+                                <th>Payment Method</th>
+                                <th>Description</th>
+                                <th>Items Count</th>
+                                <th class="text-right">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            
+                            @foreach (var invoice in Model)
+                            {
+                                <tr>
+                                    <td>@invoice.InvoiceNum</td>
+                                    <td>@invoice.InvoiceDate.ToString("dd/MM/yyyy")</td>
+                                    <td>@invoice.Customer</td>
+                                    <td>@(invoice.PaymentMethod == 1 ? "Cash" : "Card")</td>
+                                    <td>@invoice.Description?.Substring(0, 10) ...</td>
+                                    <td>@invoice.ItemsCount</td>
+                                    <td class="text-right">
+                                        <div class="dropdown">
+                                            <a href="#" data-toggle="dropdown"
+                                               class="btn btn-floating"
+                                               aria-haspopup="true" aria-expanded="false">
+                                                <i class="ti-more-alt"></i>
+                                            </a>
+                                            <div class="dropdown-menu dropdown-menu-right">
+                                                <a href="#" data-toggle="modal" data-target="#mdlEdit" class="dropdown-item text-success" data-invoice-id="@invoice.InvoiceId">Edit</a>
+                                                <a asp-action="Delete" asp-route-id="@invoice.InvoiceId" class="dropdown-item text-danger">Delete</a>
+                                            </div>
+                                        </div>
+                                    </td>
+                                </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<partial name="_CreateView" model="new InvoiceCreateVM()" />
+
+<div id="modalEditContent"></div>
+
+@section Scripts
+{
+    <script type="text/javascript">
+        $(document).on('click', '.add-size', function(){
+            var size = $('div[for="sizes"]:first').clone();
+
+            size.find('.add-size').addClass('remove-size');
+            size.find('.add-size').addClass('btn-danger');
+            size.find('.add-size').text('Remove');
+            size.find('.add-size').removeClass('add-size');
+            $('#frmItem .modal-body').append(size);
+        });
+
+        $(document).on('click', '.edit-size', function () {
+            var size = $('div[for="invoiceItems"]:first').clone();
+
+            size.find('.edit-size').addClass('remove-size');
+            size.find('.edit-size').addClass('btn-danger');
+            size.find('.edit-size').text('Remove');
+            size.find('.edit-size').removeClass('add-size');
+            $('#frmItem .modal-body').append(size);
+        });
+
+        $(document).on('click', '.remove-size', function () {
+            $(this).closest('div[for="sizes"]').remove();
+        });
+
+        $(document).on('click', '.remove-size', function () {
+            $(this).closest('div[for="invoiceItems"]').remove();
+        });
+
+        $(document).ready(function () {
+            $("#datepicker").datepicker({
+                dateFormat: 'dd/mm/yy',
+                changeMonth: true,
+                changeYear: true,
+                yearRange: '-100:+100',
+                showTimepicker: false
+            });
+        });
+
+        $(document).on('click', '.dropdown-item.text-success', function () {
+            var invoiceId = $(this).data('invoice-id');
+
+            $.ajax({
+                url: '/invoice/edit/' + invoiceId,
+                type: 'GET',
+                success: function (result) {
+                    $('#modalEditContent').html(result);
+                    $('#modalEditContent #mdlEdit').modal('show');
+                },
+                error: function () {
+                    alert('Failed to load edit view.');
+                }
+            });
+        });
+
+
+        $('input[id="Qty"], input[id="Price"], input[id = "PaymentMethod"]').on('change', function () {
+            // Get the values of qty and price inputs
+            var qty = parseInt($('input[id="Qty"]').val());
+            var price = parseInt($('input[id="Price"]').val());
+
+            // Check if payment method is Card
+            var paymentMethod = $('input[id="PaymentMethod"]:checked').val();
+            if (paymentMethod == 2 && price * qty > 10000) {
+                // Show message and reset qty and price inputs
+                alert("Total cannot exceed 10000 for Card payment method please fill the quntity and the price agin");
+                $('input[id="Qty"]').val('');
+                $('input[id="Price"]').val('');
+                // Reset total value
+                total = 0;
+                $('input[id="Total"]').val(total);
+                return;
+            }
+
+            // Calculate the new total
+            total = qty * price;
+            $('input[id="Total"]').val(total);
+        });
+    </script>
+}
